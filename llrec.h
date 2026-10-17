@@ -87,7 +87,7 @@ Node* llfilter(Node* head, Comp pred)
   
   if (head == nullptr) return nullptr; 
 
-  // filter the whole list before moving
+  // filter the whole list then move
   Node* remaining = llfilter(head->next, pred);
 
   if (pred(head->val))
