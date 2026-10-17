@@ -67,8 +67,42 @@ void dealloc(Node* head)
 //   function object struct declarations
 // -----------------------------------------------
 
+struct is_odd {
+  bool operator()(int v) const {return v %2 != 0;}
+};
 
 
+struct is_even {
+  bool operator()(int v) const {return v %2 == 0;}
+};
+
+struct is_neg {
+  bool operator()(int v) const {return v < 0;}
+};
+
+struct removeall {
+  bool operator()(int) const {return true;}
+};
+
+struct removenone {
+  bool operator()(int) const {return false;} 
+};
+
+struct divby {
+  int d;
+  divby(int divisor) : d (divisor) {}
+  bool operator()(int v) const {return v % d == 0;} 
+};
+
+template <typename Comp>
+void runTest(const char* filename, const char* label, Comp pred)
+{
+  Node* h = readList(filename);
+  h = llfilter(h, pred);
+  cout << label << ": ";
+  print(h);
+  dealloc(h);
+}
 
 
 int main(int argc, char* argv[])
@@ -86,7 +120,27 @@ int main(int argc, char* argv[])
     print(head);
 
     // Test out your linked list code
+    dealloc(head);
 
+    runTest(argv[1], "remove odds", is_odd()); 
+    runTest(argv[1], "remove evens", is_even()); 
+    runTest(argv[1], "remove neg", is_neg()); 
+    runTest(argv[1], "remove multiples of 3", divby(3)); 
+    runTest(argv[1], "remove none", removenone()); 
+    runTest(argv[1], "remove all", removeall()); 
+
+    Node* empty = llfilter(NULL, is_odd());
+    cout << "filtered empty list"; 
+    print (empty);
+
+    Node* single = new Node(5, NULL);
+    single = llfilter(single, is_even());
+    cout << "single node (5), remove events: ";
+    print (single);
+    single = llfilter(single, is_odd());
+    cout << "single node (5), remove odds: ";
+    print (single); 
+    dealloc (single);
 
 
     
