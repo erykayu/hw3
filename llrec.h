@@ -83,8 +83,24 @@ Node* llfilter(Node* head, Comp pred)
     //*********************************************
     // Provide your implementation below
     //*********************************************
+  // BC
+  
+  if (head == nullptr) return nullptr; 
 
+  // filter the whole list before moving
+  Node* remaining = llfilter(head->next, pred);
 
+  if (pred(head->val))
+  {
+    delete head;
+    return remaining; 
+  }
+
+  else 
+  {
+    head -> next = remaining;
+    return head; 
+  }
 }
 
 #endif
